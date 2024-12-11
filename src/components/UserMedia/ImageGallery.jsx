@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 import { api } from "../../../axios.config";
 import { MdArrowBack, MdArrowForward, MdErrorOutline } from "react-icons/md";
-import { Spinner } from "flowbite-react";
 import PropTypes from "prop-types";
+import Loading from "../Loader";
 
 ImageGallery.propTypes = {
     page: PropTypes.number.isRequired, 
@@ -101,7 +101,7 @@ function ImageGallery({page,setPage}) {
                         <span>{error}</span>
                     </div>
                     :
-                    <Spinner color="purple" className="w-20 h-20"/>
+                    <Loading/>
 
                 }</div>
             }
