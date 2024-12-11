@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { api } from "../../../axios.config";
 import { MdArrowBack, MdArrowForward, MdErrorOutline } from "react-icons/md";
-import PropTypes from "prop-types"
+import PropTypes from "prop-types";
 import Loading from "../Loader";
 
 VideoGallery.propTypes = {
-    page: PropTypes.number.isRequired, 
-    setPage: PropTypes.func.isRequired
-  };
+  page: PropTypes.number.isRequired,
+  setPage: PropTypes.func.isRequired,
+};
 
 function VideoGallery({ page, setPage }) {
   const [limit, setLimit] = useState(10);
@@ -34,19 +34,29 @@ function VideoGallery({ page, setPage }) {
   }, [page, limit]);
 
   return (
-    <div className="w-full flex flex-col gap-4">
+    <div className="w-full flex flex-col gap-6 p-4 bg-gradient-to-b from-gray-900 to-gray-800 rounded-lg shadow-neon">
+      {/* Heading */}
+      <h1 className="text-3xl font-bold text-center text-white neon-text">
+        Video Gallery
+      </h1>
+
       {/* Pagination */}
       <section
-        className={`flex flex-wrap items-center justify-between rounded-md p-2 bg-violet-400 ${
+        className={`flex flex-wrap items-center justify-between rounded-lg p-4 bg-gradient-to-r from-purple-900 to-indigo-900 ${
           loading ? "hidden" : ""
         }`}
       >
-        <div className="flex gap-2 rounded-md">
+        <div className="flex items-center gap-2">
           <button
-            disabled={loading || page == 1}
+            disabled={loading || page === 1}
             onClick={() => setPage((page) => page - 1)}
+            className={`p-3 rounded-md text-white transition-transform ${
+              loading || page === 1
+                ? "bg-gray-700 cursor-not-allowed"
+                : "bg-blue-500 hover:scale-110 hover:bg-blue-600"
+            }`}
           >
-            <MdArrowBack />
+            <MdArrowBack size={20} />
           </button>
           <input
             type="number"
@@ -54,62 +64,63 @@ function VideoGallery({ page, setPage }) {
             disabled={loading}
             value={page}
             onChange={(e) => {
-              setPage(e.target.value);
+              setPage(Number(e.target.value));
             }}
-            className="p-2 max-w-10 text-center bg-blue-200"
+            className="w-16 p-2 text-center text-white bg-transparent border border-blue-400 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          <button disabled={loading} onClick={() => setPage(page + 1)}>
-            <MdArrowForward />
+          <button
+            disabled={loading}
+            onClick={() => setPage(page + 1)}
+            className="p-3 rounded-md text-white transition-transform bg-blue-500 hover:scale-110 hover:bg-blue-600"
+          >
+            <MdArrowForward size={20} />
           </button>
         </div>
 
-        <div className="flex gap-2">
-          <span>Limit: </span>
+        <div className="flex items-center gap-4">
+          <span className="text-white">Limit:</span>
           <input
             type="number"
             value={limit}
-            min={0}
+            min={5}
             max={20}
             step={5}
-            onChange={(e) => setLimit(e.target.value)}
+            onChange={(e) => setLimit(Number(e.target.value))}
+            className="w-16 p-2 text-center text-white bg-transparent border border-pink-500 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500"
           />
         </div>
       </section>
 
       {/* Videos */}
       <section>
-        {videos ? (
-          <div className="flex flex-wrap gap-4">
-            {
-            videos.map((video, index) => (
+        {videos.length ? (
+          <div className="flex flex-wrap justify-center gap-6">
+            {videos.map((video, index) => (
               <div
                 key={index}
-                className="max-w-[40%] max-h-[80%] rounded-md overflow-hidden"
+                className="relative max-w-[300px] max-h-[300px] rounded-lg overflow-hidden shadow-md"
               >
                 <video
                   src={video?.url}
                   controls
-                  className="object-cover w-full rounded-lg"
+                  className="object-cover w-full h-full transition-transform hover:scale-105 rounded-lg"
                 >
                   Your browser does not support the video tag.
                 </video>
               </div>
             ))}
           </div>
-        ) 
-        : 
-        (
-            <div>{
-                error
-                ?
-                <div className="w-full p-8 flex flex-col items-center text-red-700 text-2xl">
-                    <MdErrorOutline/>
-                    <span>{error}</span>
-                </div>
-                :
-                <Loading/>
-
-            }</div>
+        ) : (
+          <div className="w-full flex flex-col items-center justify-center text-white text-xl">
+            {error ? (
+              <div className="flex flex-col items-center gap-4 text-red-500">
+                <MdErrorOutline size={50} />
+                <span>{error}</span>
+              </div>
+            ) : (
+              <Loading />
+            )}
+          </div>
         )}
       </section>
     </div>

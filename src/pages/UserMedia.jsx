@@ -9,8 +9,8 @@ function UserMedia() {
   const [videoPage,setVideoPage] = useState(1);
 
   return (
-    <div className="w-full min-h-svh flex flex-col gap-8 bg-inherit">\
-      <h2 className="font-mono font-4xl">
+    <div className="w-full min-h-svh flex flex-col gap-8 bg-inherit">
+      <h2 className="font-mono text-4xl">
         Media
       </h2>
       <div className="flex gap-4 p-2  rounded-md border-gray-700 border-2 bg-gray-500 hover:bg-purple-400">
